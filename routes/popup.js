@@ -1,8 +1,10 @@
-// backend/routes/popup.js
 const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
 
+// @route   POST /api/popup-submit
+// @desc    Handle popup form submission and save to DB
+// @access  Public
 router.post('/popup-submit', async (req, res) => {
   const { fullName, email, service, message } = req.body;
   if (!fullName || !email || !service || !message) {
