@@ -1,8 +1,10 @@
-// backend/routes/contact.js
 const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
 
+// @route   POST /api/contact
+// @desc    Handle contact form submission and save to DB
+// @access  Public
 router.post('/contact', async (req, res) => {
   const { name, email, phone, service, message } = req.body;
   if (!name || !email || !service) {
