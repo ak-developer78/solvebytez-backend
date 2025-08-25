@@ -1,4 +1,4 @@
-// backend/server.js (The Absolute Final Version)
+// backend/server.js (The Definitive Final Version)
 
 const express = require('express');
 const cors = require('cors');
@@ -10,12 +10,29 @@ const popupRoutes = require('./routes/popup');
 const app = express();
 const PORT = process.env.PORT || 8000;
 
-// Middleware setup
+// --- ADVANCED CORS CONFIGURATION ---
+// This is the definitive fix. It creates a "whitelist" of allowed URLs.
+const whitelist = [
+  process.env.FRONTEND_URL, 
+  'https://ak-developer78.github.io' // Add the second possible origin here
+];
+
 const corsOptions = {
-  origin: process.env.FRONTEND_URL || "http://localhost:5173",
+  origin: function (origin, callback) {
+    // If the origin is in our whitelist (or if it's not a browser request), allow it.
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   optionsSuccessStatus: 200
 };
-app.use(cors(corsOptions));
+// --- END OF ADVANCED CORS ---
+
+
+// Middleware setup
+app.use(cors(corsOptions)); // Use the new advanced options
 app.use(express.json());
 
 // API Routes
