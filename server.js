@@ -1,6 +1,7 @@
+// backend/server.js (The Absolute Final Version)
+
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
 require('dotenv').config();
 
 const contactRoutes = require('./routes/contact');
@@ -9,6 +10,7 @@ const popupRoutes = require('./routes/popup');
 const app = express();
 const PORT = process.env.PORT || 8000;
 
+// Middleware setup
 const corsOptions = {
   origin: process.env.FRONTEND_URL || "http://localhost:5173",
   optionsSuccessStatus: 200
@@ -20,14 +22,10 @@ app.use(express.json());
 app.use('/api', contactRoutes);
 app.use('/api', popupRoutes);
 
-// Serve React App in Production
-// This must come AFTER your API routes.
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../WEBSITE/dist')));
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../WEBSITE/dist', 'index.html'));
-  });
-}
+// A simple "health check" route to confirm the server is running
+app.get('/', (req, res) => {
+  res.send('Solvebytez backend is live and running!');
+});
 
 // Start the server
 app.listen(PORT, () => {
